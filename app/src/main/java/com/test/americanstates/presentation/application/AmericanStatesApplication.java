@@ -3,8 +3,6 @@ package com.test.americanstates.presentation.application;
 import android.app.Application;
 
 import com.test.americanstates.data.api.client.AmericanStatesRestClient;
-import com.test.americanstates.presentation.application.di.AppComponent;
-import com.test.americanstates.presentation.application.di.AppModule;
 import com.test.americanstates.presentation.application.di.DaggerAppComponent;
 
 import javax.inject.Inject;
@@ -16,7 +14,6 @@ import javax.inject.Inject;
 public class AmericanStatesApplication extends Application {
 
     private static AmericanStatesApplication instance;
-    private AppComponent appComponent;
     @Inject
     AmericanStatesRestClient restClient;
 
@@ -24,23 +21,17 @@ public class AmericanStatesApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        createComponent();
+        inject();
     }
 
-    private void createComponent() {
-        appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
-                .build();
-
-        appComponent.inject(this);
+    private void inject() {
+        DaggerAppComponent.builder()
+                .build()
+                .inject(this);
     }
 
     public static AmericanStatesApplication getApplication() {
         return instance;
-    }
-
-    public AppComponent getAppComponent() {
-        return appComponent;
     }
 
     public AmericanStatesRestClient getRestClient() {

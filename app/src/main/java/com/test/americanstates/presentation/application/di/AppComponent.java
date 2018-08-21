@@ -11,7 +11,7 @@ import dagger.Component;
  * Mykhailo on 8/21/2018.
  */
 @Singleton
-@Component(modules = {AppModule.class})
+@Component()
 public interface AppComponent {
 
     void inject(AmericanStatesApplication _app);

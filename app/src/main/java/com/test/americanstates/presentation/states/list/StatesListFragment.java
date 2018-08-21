@@ -13,7 +13,6 @@ import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.Relay;
 import com.test.americanstates.R;
 import com.test.americanstates.data.states.list.model.State;
-import com.test.americanstates.presentation.application.AmericanStatesApplication;
 import com.test.americanstates.presentation.basics.BaseFragment;
 import com.test.americanstates.presentation.states.detail.StateDetailFragment;
 import com.test.americanstates.presentation.states.list.adapter.StatesAdapter;
@@ -64,7 +63,6 @@ public class StatesListFragment extends BaseFragment implements IStatesListContr
 
     private void inject() {
         DaggerStatesListComponent.builder()
-                .appComponent(AmericanStatesApplication.getApplication().getAppComponent())
                 .build()
                 .inject(this);
     }
