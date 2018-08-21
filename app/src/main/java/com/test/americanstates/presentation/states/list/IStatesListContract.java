@@ -20,6 +20,7 @@ public interface IStatesListContract {
         void showLoadingIndicator();
         void hideLoadingIndicator();
         void showError();
+        void onItemClick(State _state);
 
         Relay<Boolean> retry();
     }
@@ -29,5 +30,6 @@ public interface IStatesListContract {
         void setView(IView _view);
         void onActivityCreated(@Nullable Bundle _savedInstanceState);
         void onDestroyView();
+        void onItemClick(State _state);
     }
 }

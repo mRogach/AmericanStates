@@ -2,11 +2,13 @@ package com.test.americanstates.data.states.list.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by
  * Mykhailo on 8/21/2018.
  */
-public class State {
+public class State implements Serializable {
 
     private int id;
     private String country;

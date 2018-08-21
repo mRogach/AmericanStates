@@ -1,5 +1,6 @@
 package com.test.americanstates.presentation.states.list.adapter;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,12 +13,12 @@ import com.test.americanstates.data.states.list.model.State;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by
@@ -26,6 +27,11 @@ import butterknife.ButterKnife;
 public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StatesViewHolder> {
 
     private List<State> states = new ArrayList<>();
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     @Inject
     public StatesAdapter() {
@@ -45,14 +51,15 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StatesView
                 .inflate(R.layout.item_state, parent, false));
     }
 
+    @SuppressLint("StringFormatMatches")
     @Override
     public void onBindViewHolder(@NonNull StatesViewHolder holder, int position) {
         State state = states.get(position);
+        holder.state = state;
 
         holder.tvStateName.setText(state.getName());
-        holder.tvStateAbbr.setText(String.format(Locale.getDefault(),
-                holder.tvStateAbbr.getContext().getString(R.string.item_state_abbr), state.getAbbr()));
-
+        holder.tvStateAbbr.setText(holder.tvStateAbbr.getContext().getString(
+                R.string.item_state_abbr, state.getCountry(), state.getAbbr()));
         holder.tvCapital.setText(state.getCapital());
         holder.tvLargestCity.setText(state.getLargestCity());
         holder.tvStateId.setText(String.valueOf(state.getId()));
@@ -64,6 +71,13 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StatesView
     }
 
     public class StatesViewHolder extends RecyclerView.ViewHolder {
+
+        private State state;
+
+        @OnClick(R.id.cvItem_IS)
+        protected void onItemClick() {
+            onItemClickListener.onStateClick(state);
+        }
 
         @BindView(R.id.tvStateName_IS)
         TextView tvStateName;
@@ -80,5 +94,9 @@ public class StatesAdapter extends RecyclerView.Adapter<StatesAdapter.StatesView
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onStateClick(State state);
     }
 }

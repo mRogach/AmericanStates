@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -14,6 +15,7 @@ import com.test.americanstates.R;
 import com.test.americanstates.data.states.list.model.State;
 import com.test.americanstates.presentation.application.AmericanStatesApplication;
 import com.test.americanstates.presentation.basics.BaseFragment;
+import com.test.americanstates.presentation.states.detail.StateDetailFragment;
 import com.test.americanstates.presentation.states.list.adapter.StatesAdapter;
 import com.test.americanstates.presentation.states.list.di.DaggerStatesListComponent;
 
@@ -36,6 +38,8 @@ public class StatesListFragment extends BaseFragment implements IStatesListContr
     ProgressBar rbLoading;
     @BindView(R.id.rlError)
     RelativeLayout rlError;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @Inject
     IStatesListContract.IPresenter presenter;
     @Inject
@@ -77,12 +81,18 @@ public class StatesListFragment extends BaseFragment implements IStatesListContr
     private void setUpAdapter() {
         rvStates.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvStates.setAdapter(statesAdapter);
+        statesAdapter.setOnItemClickListener(state -> presenter.onItemClick(state));
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         presenter.onDestroyView();
+    }
+
+    @Override
+    protected Toolbar getToolbar() {
+        return toolbar;
     }
 
     @Override
@@ -109,6 +119,17 @@ public class StatesListFragment extends BaseFragment implements IStatesListContr
     public void showError() {
         rlError.setVisibility(View.VISIBLE);
         rbLoading.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onItemClick(State _state) {
+        if (getActivity() == null) return;
+        StateDetailFragment stateDetailFragment = StateDetailFragment.newInstance(_state);
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.flContainer_AM, stateDetailFragment)
+                .addToBackStack(stateDetailFragment.getClass().toString())
+                .commit();
     }
 
     @Override

@@ -45,6 +45,11 @@ public class StatesListPresenter implements IStatesListContract.IPresenter {
         disposable.clear();
     }
 
+    @Override
+    public void onItemClick(State _state) {
+        view.onItemClick(_state);
+    }
+
     private void setUpStream() {
         Observable<List<State>> states = iGetStatesListInteractor.getStates()
                 .doOnSubscribe(disposable -> view.showLoadingIndicator())

@@ -24,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setSupportActionBar(findViewById(R.id.toolbar));
-
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
